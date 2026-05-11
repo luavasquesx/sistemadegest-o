@@ -1,0 +1,748 @@
+# GesControl — Site de Demonstração
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GesControl | Sistema de Gestão</title>
+<link rel="icon" type="image/png" href="gslogo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      background:#070b16;
+      color:#fff;
+      overflow-x:hidden;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    :root{
+      --primary:#7c3aed;
+      --secondary:#06b6d4;
+      --dark:#0b1120;
+      --card:#12192b;
+      --border:rgba(255,255,255,0.08);
+      --text:#dbe4ff;
+    }
+
+    .container{
+      width:min(1180px,92%);
+      margin:auto;
+    }
+
+    header{
+      position:fixed;
+      width:100%;
+      top:0;
+      z-index:999;
+      backdrop-filter:blur(16px);
+      background:rgba(7,11,22,0.72);
+      border-bottom:1px solid rgba(255,255,255,0.05);
+    }
+
+    .nav{
+      height:82px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      font-weight:700;
+      font-size:22px;
+    }
+
+    .logo img{
+      width:58px;
+      height:58px;
+      object-fit:contain;
+    }
+
+    .menu{
+      display:flex;
+      gap:28px;
+      align-items:center;
+    }
+
+    .menu a{
+      color:#fff;
+      text-decoration:none;
+      font-size:15px;
+      transition:.3s;
+    }
+
+    .menu a:hover{
+      color:#8b5cf6;
+    }
+
+    .btn{
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      color:#fff;
+      padding:14px 26px;
+      border-radius:14px;
+      text-decoration:none;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      transition:.35s;
+      box-shadow:0 10px 30px rgba(124,58,237,0.35);
+    }
+
+    .btn:hover{
+      transform:translateY(-3px);
+    }
+
+    .hero{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      position:relative;
+      overflow:hidden;
+      padding-top:120px;
+    }
+
+    .hero::before{
+      content:'';
+      position:absolute;
+      width:700px;
+      height:700px;
+      background:radial-gradient(circle,var(--primary),transparent 70%);
+      opacity:.18;
+      top:-250px;
+      left:-150px;
+    }
+
+    .hero::after{
+      content:'';
+      position:absolute;
+      width:600px;
+      height:600px;
+      background:radial-gradient(circle,var(--secondary),transparent 70%);
+      opacity:.16;
+      bottom:-250px;
+      right:-180px;
+    }
+
+    .hero-content{
+      display:grid;
+      grid-template-columns:1.1fr 1fr;
+      gap:50px;
+      align-items:center;
+      position:relative;
+      z-index:2;
+    }
+
+    .hero-text small{
+      color:#9ca3af;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-weight:600;
+    }
+
+    .hero-text h1{
+      font-size:72px;
+      line-height:1;
+      margin:18px 0;
+    }
+
+    .gradient{
+      background:linear-gradient(135deg,#c084fc,#22d3ee);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .hero-text p{
+      color:#cbd5e1;
+      line-height:1.8;
+      font-size:18px;
+      margin-bottom:32px;
+    }
+
+    .hero-buttons{
+      display:flex;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .btn-outline{
+      border:1px solid rgba(255,255,255,0.12);
+      padding:14px 24px;
+      border-radius:14px;
+      text-decoration:none;
+      color:#fff;
+      font-weight:600;
+      transition:.3s;
+    }
+
+    .btn-outline:hover{
+      background:#ffffff10;
+    }
+
+    .hero-image{
+      position:relative;
+    }
+
+    .hero-image img{
+      width:100%;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow:0 25px 60px rgba(0,0,0,0.4);
+    }
+
+    section{
+      padding:100px 0;
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:60px;
+    }
+
+    .section-title span{
+      color:#8b5cf6;
+      font-weight:700;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      font-size:14px;
+    }
+
+    .section-title h2{
+      font-size:48px;
+      margin-top:12px;
+    }
+
+    .section-title p{
+      color:#94a3b8;
+      max-width:720px;
+      margin:20px auto 0;
+      line-height:1.8;
+    }
+
+    .features{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:24px;
+    }
+
+    .feature-card{
+      background:linear-gradient(180deg,#12192b,#0f172a);
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:30px;
+      transition:.35s;
+    }
+
+    .feature-card:hover{
+      transform:translateY(-8px);
+      border-color:#7c3aed;
+    }
+
+    .feature-icon{
+      width:70px;
+      height:70px;
+      border-radius:20px;
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      margin-bottom:24px;
+    }
+
+    .feature-card h3{
+      margin-bottom:14px;
+      font-size:22px;
+    }
+
+    .feature-card p{
+      color:#94a3b8;
+      line-height:1.7;
+    }
+
+    .screens{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:30px;
+    }
+
+    .screen-card{
+      background:#101827;
+      border:1px solid var(--border);
+      border-radius:24px;
+      overflow:hidden;
+    }
+
+    .screen-card img{
+      width:100%;
+      display:block;
+    }
+
+    .screen-content{
+      padding:24px;
+    }
+
+    .screen-content h3{
+      margin-bottom:12px;
+      font-size:24px;
+    }
+
+    .screen-content p{
+      color:#94a3b8;
+      line-height:1.8;
+    }
+
+    .pricing{
+      background:linear-gradient(180deg,#0f172a,#070b16);
+      border:1px solid var(--border);
+      border-radius:34px;
+      padding:50px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .pricing::before{
+      content:'';
+      position:absolute;
+      width:450px;
+      height:450px;
+      background:radial-gradient(circle,#7c3aed,transparent 70%);
+      opacity:.14;
+      top:-180px;
+      right:-180px;
+    }
+
+    .pricing h2{
+      font-size:52px;
+      margin:14px 0;
+    }
+
+    .price{
+      font-size:82px;
+      font-weight:800;
+      margin:22px 0;
+      background:linear-gradient(135deg,#c084fc,#22d3ee);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .price span{
+      font-size:22px;
+      font-weight:500;
+    }
+
+    .pricing ul{
+      list-style:none;
+      margin:35px 0;
+      display:grid;
+      gap:14px;
+    }
+
+    .pricing li{
+      color:#cbd5e1;
+      font-size:17px;
+    }
+
+    .payment-box{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:24px;
+      margin-top:40px;
+    }
+
+    .payment-card{
+      background:#111827;
+      border:1px solid var(--border);
+      padding:28px;
+      border-radius:22px;
+    }
+
+    .payment-card h3{
+      margin-bottom:14px;
+      font-size:24px;
+    }
+
+    .payment-card p{
+      color:#94a3b8;
+      line-height:1.7;
+      margin-bottom:18px;
+    }
+
+    .pix-code{
+      background:#0b1120;
+      border:1px dashed #7c3aed;
+      padding:14px;
+      border-radius:12px;
+      color:#fff;
+      font-size:14px;
+      word-break:break-all;
+    }
+
+    footer{
+      padding:40px 0;
+      border-top:1px solid rgba(255,255,255,0.08);
+      text-align:center;
+    }
+
+    footer p{
+      color:#94a3b8;
+      margin-top:12px;
+    }
+
+    footer strong{
+      color:#fff;
+    }
+
+    @media(max-width:980px){
+      .hero-content,
+      .features,
+      .screens,
+      .payment-box{
+        grid-template-columns:1fr;
+      }
+
+      .hero-text h1{
+        font-size:48px;
+      }
+
+      .section-title h2{
+        font-size:38px;
+      }
+
+      .price{
+        font-size:58px;
+      }
+
+      .menu{
+        display:none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <div class="logo">
+      <img src="gslogo.png" alt=" GesControl">
+      <span>GesControl</span>
+    </div>
+
+    <nav class="menu">
+      <a href="#funcionalidades">Funcionalidades</a>
+      <a href="#sistema">Sistema</a>
+      <a href="#preco">Valor</a>
+    </nav>
+
+    <a href="#preco" class="btn">Comprar agora</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-content">
+
+    <div class="hero-text">
+      <small>Sistema inteligente para pequenos negócios</small>
+
+      <h1>
+        Controle total do seu negócio com o <span class="gradient">GesControl</span>
+      </h1>
+
+      <p>
+        Sistema completo de gestão financeira, estoque e vendas para depósitos, lojas, pequenos comércios e empreendedores.
+        Controle produtos, acompanhe lucro, registre vendas e visualize gráficos em tempo real.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="#preco" class="btn">Comprar sistema</a>
+        <a href="#funcionalidades" class="btn-outline">Ver funcionalidades</a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <img src="utilidade1.png" alt="Sistema GesControl">
+    </div>
+
+  </div>
+</section>
+
+<section id="funcionalidades">
+  <div class="container">
+
+    <div class="section-title">
+      <span>Funcionalidades reais</span>
+      <h2>O que o GesControl oferece</h2>
+      <p>
+        Sistema desenvolvido para facilitar a gestão diária do negócio, economizando tempo e aumentando o controle financeiro.
+      </p>
+    </div>
+
+    <div class="features">
+
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Dashboard com gráficos</h3>
+        <p>
+          Visualize vendas, lucro, produtos mais vendidos e desempenho do negócio através de gráficos automáticos.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📦</div>
+        <h3>Controle de estoque</h3>
+        <p>
+          Gerencie entradas e saídas de produtos, controle estoque baixo e acompanhe tudo em tempo real.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <h3>Controle financeiro</h3>
+        <p>
+          Acompanhe lucro, custo, vendas do dia e histórico completo das movimentações.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🛒</div>
+        <h3>Carrinho de vendas</h3>
+        <p>
+          Sistema simples e rápido para finalizar vendas, gerar comprovantes e registrar histórico.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <h3>Login e segurança</h3>
+        <p>
+          Sistema com login protegido por senha e configurações personalizáveis.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">☁️</div>
+        <h3>Backup de dados</h3>
+        <p>
+          Exporte e importe backup completo do sistema com produtos, vendas e configurações.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section id="sistema">
+  <div class="container">
+
+    <div class="section-title">
+      <span>Visual profissional</span>
+      <h2>Sistema moderno e intuitivo</h2>
+      <p>
+        Interface limpa, rápida e otimizada para computador e notebook.
+      </p>
+    </div>
+
+    <div class="screens">
+
+      <div class="screen-card">
+        <img src="utilidade2.png" alt="Gerencie seus produtos">
+
+        <div class="screen-content">
+          <h3>Gerenciamento de produtos</h3>
+          <p>
+            Gerencie produtos, estoque e preços com rapidez, praticidade e controle total em uma interface moderna e intuitiva.
+          </p>
+        </div>
+      </div>
+
+      <div class="screen-card">
+        <img src="utilidade3.png" alt="Gestão de vendas">
+
+        <div class="screen-content">
+          <h3>Controle de vendas</h3>
+          <p>
+            Sistema de venda rápida com atualização automática do estoque e histórico detalhado. Venda com rapidez e organização através de um carrinho inteligente, com cálculo automático, controle de itens e fechamento simplificado.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section id="preco">
+  <div class="container">
+
+    <div class="pricing">
+      <span class="gradient">ACESSO VITALÍCIO</span>
+
+      <h2>GesControl Completo</h2>
+
+      <div class="price">
+        R$ 29,90
+        <span>pagamento único</span>
+      </div>
+
+      <ul>
+        <li>✔ Sistema completo e vitalício</li>
+        <li>✔ Dashboard com gráficos</li>
+        <li>✔ Controle financeiro</li>
+        <li>✔ Controle de estoque</li>
+        <li>✔ Histórico de vendas</li>
+        <li>✔ Backup do sistema</li>
+        <li>✔ Personalização de cores</li>
+        <li>✔ Entrega por e-mail</li>
+      </ul>
+
+<div style="
+background:#111827;
+padding:30px;
+border-radius:24px;
+border:1px solid rgba(255,255,255,0.08);
+margin-top:40px;
+margin-bottom:30px;
+">
+
+<h3 style="font-size:28px; margin-bottom:10px;">
+Receba o sistema automaticamente
+</h3>
+
+<p style="
+color:#94a3b8;
+margin-bottom:25px;
+line-height:1.8;
+">
+Preencha seus dados antes do pagamento para receber o GesControl no seu e-mail após a confirmação.
+</p>
+
+<form action="https://formsubmit.co/luanavasquesx@gmail.com" method="POST">
+
+<input type="hidden" name="_subject" value="Novo comprador - GesControl">
+
+<input type="hidden" name="_captcha" value="false">
+
+<input type="text" 
+name="nome" 
+placeholder="Seu nome" 
+required
+style="
+width:100%;
+padding:16px;
+margin-bottom:15px;
+border-radius:14px;
+border:none;
+background:#0b1120;
+color:white;
+">
+
+<input type="email" 
+name="email" 
+placeholder="Seu melhor e-mail" 
+required
+style="
+width:100%;
+padding:16px;
+margin-bottom:15px;
+border-radius:14px;
+border:none;
+background:#0b1120;
+color:white;
+">
+
+<input type="text" 
+name="whatsapp" 
+placeholder="Seu WhatsApp" 
+required
+style="
+width:100%;
+padding:16px;
+margin-bottom:20px;
+border-radius:14px;
+border:none;
+background:#0b1120;
+color:white;
+">
+
+<button type="submit" class="btn" style="width:100%; justify-content:center;">
+Continuar para pagamento
+</button>
+
+</form>
+
+</div>
+
+      <div class="payment-box">
+
+        <div class="payment-card">
+          <h3>Pagamento via Pix</h3>
+
+          <p>
+            Faça o pagamento diretamente pelo Pix e envie o comprovante para receber o sistema.
+          </p>
+
+        
+<a href="https://payment-link-v3.ton.com.br/pl_gv9NK2DVkx43al9FeAt7b0EBMpQJm8e5" 
+   class="btn" 
+   target="_blank"
+   style="width:100%; justify-content:center; margin-top:10px;">
+   Pagar via Pix
+</a>
+        </div>
+
+        <div class="payment-card">
+          <h3>Cartão de crédito</h3>
+
+          <p>
+            Também aceitamos pagamento por link de cartão.
+          </p>
+
+          <a href="https://payment-link-v3.ton.com.br/pl_Qoek4AGLK5DEXMVUaaho0pn2qbxwRl71" class="btn" target="_blank"> 
+  Pagar com cartão
+</a>
+
+      </a>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+<footer>
+  <div class="container">
+    <img src="vasqode.png" width="110" alt="Vasqode">
+
+    <p>
+      Todos os direitos reservados &copy; 2026 <strong> Desenvolvido por Vasqode</strong>
+
+
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
+
+
